@@ -14,10 +14,11 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.Component;
 
 /**
  *
- * @author Diep.Tran
+ *
  */
 public class PharmacyFrame extends javax.swing.JFrame {
 	DefaultTableModel tableModel;
@@ -29,6 +30,7 @@ public class PharmacyFrame extends javax.swing.JFrame {
 	 */
 
 	public PharmacyFrame() {
+		getContentPane().setBackground(Color.WHITE);
 		initComponents();
 
 		tableModel = (DefaultTableModel) tblPharmacy.getModel();
@@ -219,23 +221,20 @@ public class PharmacyFrame extends javax.swing.JFrame {
 		pharmacityLabel.setBackground(new Color(0, 51, 102));
 		
 		JLabel labelForButton = new JLabel("");
+		labelForButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		labelForButton.setOpaque(true);
 		labelForButton.setEnabled(false);
 		labelForButton.setBackground(new Color(0, 102, 153));
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		layout.setHorizontalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
+			layout.createParallelGroup(Alignment.TRAILING)
+				.addComponent(pharmacityLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 955, Short.MAX_VALUE)
+				.addComponent(labelForButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 955, Short.MAX_VALUE)
 				.addGroup(layout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(463, Short.MAX_VALUE))
-				.addComponent(pharmacityLabel, GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
-				.addGroup(layout.createSequentialGroup()
-					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 803, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(122, Short.MAX_VALUE))
-				.addGroup(layout.createSequentialGroup()
-					.addComponent(labelForButton, GroupLayout.PREFERRED_SIZE, 905, GroupLayout.PREFERRED_SIZE)
+					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(jScrollPane1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE)
+						.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		layout.setVerticalGroup(
@@ -244,11 +243,10 @@ public class PharmacyFrame extends javax.swing.JFrame {
 					.addComponent(pharmacityLabel, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(labelForButton, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-					.addGap(51)
-					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 267, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
 		);
 		getContentPane().setLayout(layout);
 

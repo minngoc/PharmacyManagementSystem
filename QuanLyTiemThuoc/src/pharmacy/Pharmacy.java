@@ -24,6 +24,17 @@ public class Pharmacy {
 		this.soluong = soluong;
 		this.cachdung = cachdung;
 	}
+	public Pharmacy(String tensanpham, double gia, int soluong, String cachdung) {
+		this.tensanpham = tensanpham;
+		this.gia = gia;
+		this.soluong = soluong;
+		this.cachdung = cachdung;
+	}
+	
+	public Pharmacy( String dvt) {
+		this.dvt = dvt;
+	}
+	
 
 	public int getId() {
 		return id;

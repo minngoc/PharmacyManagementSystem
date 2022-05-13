@@ -69,7 +69,7 @@ public class PharmacyModify {
         
         try {
             //lay tat ca danh sach pharmacy
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pharmacy_management", "root", "admin");
             
             //query
             String sql = "insert into pharmacy(tensanpham, dvt, gia, soluong, cachdung) values(?, ?, ?, ?, ?)";
@@ -82,6 +82,7 @@ public class PharmacyModify {
             statement.setString(5, std.getCachdung());
             
             statement.execute();
+            System.out.println("Them thanh cong");
         } catch (SQLException ex) {
             Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

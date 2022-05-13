@@ -9,15 +9,27 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 import java.awt.Color;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import pharmacy.Pharmacy;
+import pharmacy.PharmacyModify;
+
 import javax.swing.JSeparator;
 import java.awt.Dimension;
 import javax.swing.JComboBox;
@@ -35,10 +47,32 @@ public class ManHinhChinh extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	public JComboBox comboBoxDVT;
+	
+	private String DVT;
 
 	/**
 	 * Launch the application.
 	 */
+	
+	////////////////////////////////////////////////////////////////////
+	DefaultTableModel tableModel;
+	List<Pharmacy> pharmacyList = new ArrayList<>();
+	
+	//tableModel = (DefaultTableModel) tblPharmacy.getModel();
+	////////////////////////////////////////////////////////////////////
+	
+//	private void showStudent() {
+//		pharmacyList = PharmacyModify.findAll();
+//
+//		tableModel.setRowCount(0);
+//
+//		pharmacyList.forEach((Pharmacy) -> {
+//			tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, Pharmacy.getTensanpham(), Pharmacy.getDvt(),
+//					Pharmacy.getGia(), Pharmacy.getSoluong() });
+//		});
+//	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -63,6 +97,25 @@ public class ManHinhChinh extends JFrame {
 		//this.setExtendedState(MAXIMIZED_BOTH);
 //		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //		this.setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
+		
+		
+		/////////////////////////////////////////////////////////////////////
+//		ActionListener ac = new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String src = e.getActionCommand();
+//				
+//				if(src.equals("THÊM"))
+//				{
+//					btnThem(e);
+//				}
+//				else if(src.equals("RESET")) {
+//					btnReset(e);
+//				}
+//				
+//			}
+//		};
 		
 		
 		setBounds(100, 100, 921, 667);
@@ -216,27 +269,48 @@ public class ManHinhChinh extends JFrame {
 		panelThemThuoc.add(separator);
 		
 		JButton btnThem = new JButton("THÊM");
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnThem(e);
+			}
+		});
+		
 		btnThem.setFont(new Font("Arial", Font.BOLD, 14));
 		btnThem.setForeground(new Color(255, 255, 255));
 		btnThem.setBackground(new Color(0, 102, 153));
 		btnThem.setBorder(null);
 		btnThem.setBounds(475, 308, 100, 36);
+		
 		panelThemThuoc.add(btnThem);
 		
 		JButton btnReset = new JButton("RESET");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnReset(e);
+			}
+		});
 		btnReset.setForeground(Color.WHITE);
 		btnReset.setFont(new Font("Arial", Font.BOLD, 14));
 		btnReset.setBorder(null);
 		btnReset.setBackground(new Color(0, 102, 153));
 		btnReset.setBounds(641, 308, 100, 36);
+		//btnReset.addActionListener(ac);
 		panelThemThuoc.add(btnReset);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setFont(new Font("Arial", Font.PLAIN, 12));
-		comboBox.setBackground(new Color(255, 255, 255));
-		comboBox.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		comboBox.setBounds(158, 184, 201, 22);
-		panelThemThuoc.add(comboBox);
+		//String [] dvt = new String [] {"Vỉ", "Hộp"};
+		JComboBox comboBoxDVT = new JComboBox();
+		comboBoxDVT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DVT = comboBoxDVT.getSelectedItem().toString();
+			}
+		});
+		comboBoxDVT.setFont(new Font("Arial", Font.PLAIN, 12));
+		comboBoxDVT.setBackground(new Color(255, 255, 255));
+		comboBoxDVT.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		comboBoxDVT.setBounds(158, 184, 201, 22);
+		String [] dvt = new String [] {" ","Vỉ", "Hộp"};
+		comboBoxDVT.setModel(new javax.swing.DefaultComboBoxModel<>(dvt));
+		panelThemThuoc.add(comboBoxDVT);
 		
 		JPanel panelTraCucThuoc = new JPanel();
 		panelTraCucThuoc.setBackground(new Color(255, 255, 255));
@@ -340,5 +414,53 @@ public class ManHinhChinh extends JFrame {
 		
 		
 		//this.setVisible(true);
+	}
+	
+	
+	private void showStudent() {
+		pharmacyList = PharmacyModify.findAll();
+
+		tableModel.setRowCount(0);
+
+		pharmacyList.forEach((Pharmacy) -> {
+			tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, Pharmacy.getTensanpham(), Pharmacy.getDvt(),
+					Pharmacy.getGia(), Pharmacy.getSoluong() });
+		});
+	}
+	
+	private void btnThem(java.awt.event.ActionEvent evt) {
+		// TODO add your handling code here:
+
+		//String Dvt = (String)comboBoxDVT.getSelectedItem();
+//		String Dvt = null;
+//		try {
+//			Dvt = comboBoxDVT.getItemAt(comboBoxDVT.getSelectedIndex()).toString();
+//			System.out.println("get duoc dvt duoc roi");
+//		} catch (Exception e) {
+//			System.out.println("Lay thong tin DVT that bai");
+//			e.printStackTrace();
+//		}
+		//String Dvt = "Vỉ";
+		
+		int Gia = Integer.parseInt(textFieldGia.getText());
+		int Soluong = Integer.parseInt(textFieldSoLuong.getText());
+		String Cachdung = textFieldCachDung.getText();
+		String Tensanpham = textFieldTenThuoc.getText();
+		
+		Pharmacy std = new Pharmacy(Tensanpham, DVT,  Gia, Soluong, Cachdung);
+
+		PharmacyModify.insert(std);
+
+		showStudent();
+	}
+	
+	private void btnReset(java.awt.event.ActionEvent evt) {
+		// TODO add your handling code here:
+		textFieldMaThuoc.setText("");
+		textFieldTenThuoc.setText("");
+		textFieldGia.setText("");
+		textFieldSoLuong.setText("");
+		textFieldCachDung.setText("");
+		comboBoxDVT.setSelectedIndex(0);
 	}
 }
