@@ -23,7 +23,7 @@ public class PharmacyModify {
         Statement statement = null;
         
         try {
-            //lay tat ca danh sach sinh vien
+            //lay tat ca danh sach thuoc
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
             
             //query
@@ -33,9 +33,9 @@ public class PharmacyModify {
             ResultSet resultSet = statement.executeQuery(sql);
             
             while (resultSet.next()) {                
-            	Pharmacy std = new Pharmacy(resultSet.getInt("id"), 
+            	Pharmacy std = new Pharmacy(resultSet.getString("mathuoc"), 
                         resultSet.getString("tensanpham"), resultSet.getString("dvt"), 
-                        resultSet.getInt("gia"), resultSet.getInt("soluong"), 
+                        resultSet.getDouble("gia"), resultSet.getInt("soluong"), 
                         resultSet.getString("cachdung"));
             	pharmacyList.add(std);
             }
@@ -68,21 +68,23 @@ public class PharmacyModify {
         PreparedStatement statement = null;
         
         try {
-            //lay tat ca danh sach pharmacy
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pharmacy_management", "root", "admin");
+            //lay tat ca danh sach pharmacy de thuc hien truy van query
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
             
             //query
-            String sql = "insert into pharmacy(tensanpham, dvt, gia, soluong, cachdung) values(?, ?, ?, ?, ?)";
+            String sql = "insert into pharmacy(mathuoc,tensanpham, dvt, gia, soluong, cachdung) values(?,?, ?, ?, ?, ?)";
             statement = connection.prepareCall(sql);
             
-            statement.setString(1, std.getTensanpham());
-            statement.setString(2, std.getDvt());
-            statement.setDouble(3, std.getGia());
-            statement.setInt(4, std.getSoluong());
-            statement.setString(5, std.getCachdung());
+            statement.setString(1, std.getId());
+            statement.setString(2, std.getTensanpham());
+            statement.setString(3, std.getDvt());
+            statement.setDouble(4, std.getGia());
+            statement.setInt(5, std.getSoluong());
+            statement.setString(6, std.getCachdung());
             
             statement.execute();
             System.out.println("Them thanh cong");
+            
         } catch (SQLException ex) {
             Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -203,9 +205,9 @@ public class PharmacyModify {
             ResultSet resultSet = statement.executeQuery();
             
             while (resultSet.next()) {                
-            	Pharmacy std = new Pharmacy(resultSet.getInt("id"), 
+            	Pharmacy std = new Pharmacy(resultSet.getString("mathuoc"), 
                         resultSet.getString("tensanpham"), resultSet.getString("dvt"), 
-                        resultSet.getInt("gia"), resultSet.getInt("soluong"), 
+                        resultSet.getDouble("gia"), resultSet.getInt("soluong"), 
                         resultSet.getString("cachdung"));
             	pharmacyList.add(std);
             }

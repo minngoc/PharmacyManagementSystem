@@ -1,7 +1,7 @@
 package pharmacy;
 
 public class Pharmacy {
-	int id;
+	String id;
 	String tensanpham, dvt, cachdung;
 	double gia;
 	int soluong;
@@ -9,7 +9,7 @@ public class Pharmacy {
 	public Pharmacy() {
 	}
 
-	public Pharmacy(int id, String tensanpham, String dvt, double gia, int soluong, String cachdung) {
+	public Pharmacy(String id, String tensanpham, String dvt, double gia, int soluong, String cachdung) {
 		this.id = id;
 		this.tensanpham = tensanpham;
 		this.dvt = dvt;
@@ -36,11 +36,11 @@ public class Pharmacy {
 	}
 	
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
