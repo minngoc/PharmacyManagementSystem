@@ -1,10 +1,10 @@
 package pharmacy;
 
 public class Pharmacy {
-	String id;
-	String tensanpham, dvt, cachdung;
-	double gia;
-	int soluong;
+	private String id;
+	private String tensanpham, dvt, cachdung;
+	private double gia;
+	private int soluong;
 
 	public Pharmacy() {
 	}

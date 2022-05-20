@@ -63,6 +63,51 @@ public class PharmacyModify {
         return pharmacyList;
     }
     
+    public static Pharmacy FindWithID(String id) {
+    	//List<Pharmacy> pharmacyList = new ArrayList<>();
+    	
+    	Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
+
+            String query ="select * from pharmacy where mathuoc like?";
+            statement = connection.prepareCall(query);
+            
+            statement.setString(1, "%"+id+"%");
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while (resultSet.next()) {                
+            	Pharmacy std = new Pharmacy(resultSet.getString("mathuoc"), 
+                        resultSet.getString("tensanpham"), resultSet.getString("dvt"), 
+                        resultSet.getDouble("gia"), resultSet.getInt("soluong"), 
+                        resultSet.getString("cachdung"));
+            	//pharmacyList.add(std);
+            	
+            return std;
+            }
+		} catch (SQLException ex) {
+            Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
     public static void insert(Pharmacy std) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -150,7 +195,7 @@ public class PharmacyModify {
         //ket thuc.
     }
     
-    public static void delete(int id) {
+    public static void delete(String id) {
         Connection connection = null;
         PreparedStatement statement = null;
         
@@ -162,7 +207,7 @@ public class PharmacyModify {
             String sql = "delete from pharmacy where id = ?";
             statement = connection.prepareCall(sql);
             
-            statement.setInt(1, id);
+            statement.setString(1, id);
             
             statement.execute();
         } catch (SQLException ex) {

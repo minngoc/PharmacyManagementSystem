@@ -39,6 +39,8 @@ import java.awt.Dimension;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class ManHinhChinh extends JFrame {
 
@@ -50,38 +52,22 @@ public class ManHinhChinh extends JFrame {
 	public JTextField textFieldCachDungThemThuoc;
 	public JTextField textFieldTenThuocTraCuu;
 	public JComboBox comboBoxDvtThemThuoc;
-	
-	///Chữa cháy lỗi this.comboBoxDVT is null
-//	private String DVT;
 
-	/**
-	 * Launch the application.
-	 */
-	
-	////////////////////////////////////////////////////////////////////
-	DefaultTableModel tableModel;
-	List<Pharmacy> pharmacyList = new ArrayList<>();
+	public JTable table;
 	public JPanel panelThemThuoc;
 	public JTabbedPane tabbedPane;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
+	public JTextField textFieldMaThuocCapNhat;
+	public JTextField textFieldTenThuocCapNhat;
+	public JTextField textFieldGiaCapNhat;
+	public JTextField textFieldSoLuongCapNhat;
+	public JTextField textFieldCachDungCapNhat;
+	public JComboBox comboBoxDVTCapNhat;
 	
-	//tableModel = (DefaultTableModel) tblPharmacy.getModel();
-	////////////////////////////////////////////////////////////////////
+	DefaultTableModel tableModel;
+	List<Pharmacy> pharmacyList = new ArrayList<>();
+	public String[] model_DVT;
 	
-//	private void showStudent() {
-//		pharmacyList = PharmacyModify.findAll();
-//
-//		tableModel.setRowCount(0);
-//
-//		pharmacyList.forEach((Pharmacy) -> {
-//			tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, Pharmacy.getTensanpham(), Pharmacy.getDvt(),
-//					Pharmacy.getGia(), Pharmacy.getSoluong() });
-//		});
-//	}
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -184,7 +170,7 @@ public class ManHinhChinh extends JFrame {
 		btnThongKe.setFont(new Font("Arial", Font.BOLD, 15));
 		btnThongKe.setBorderPainted(false);
 		btnThongKe.setBackground(new Color(0, 102, 153));
-		btnThongKe.setBounds(10, 6, 131, 41);
+		btnThongKe.setBounds(0, 6, 141, 41);
 		layeredPane.add(btnThongKe);
 		
 		//////////////////////////////////////////////////////////////
@@ -208,13 +194,14 @@ public class ManHinhChinh extends JFrame {
 		btnThemThuoc.setFont(new Font("Arial", Font.BOLD, 15));
 		btnThemThuoc.setBorderPainted(false);
 		btnThemThuoc.setBackground(new Color(0, 102, 153));
-		btnThemThuoc.setBounds(137, 0, 141, 52);
+		btnThemThuoc.setBounds(137, 3, 141, 46);
 		layeredPane.add(btnThemThuoc);
 		
 		JButton btnTraCuuThuoc = new JButton("TRA CỨU THUỐC");
 		btnTraCuuThuoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setSelectedIndex(2);
+				showTablePharmacy();
 			}
 		});
 		btnTraCuuThuoc.setOpaque(true);
@@ -370,7 +357,12 @@ public class ManHinhChinh extends JFrame {
 		JButton btnReset = new JButton("RESET");
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnReset(e);
+				textFieldMaThuocThemThuoc.setText("");
+				textFieldTenThuocThemThuoc.setText("");
+				textFieldGiaThemThuoc.setText("");
+				textFieldSoLuongThemThuoc.setText("");
+				textFieldCachDungThemThuoc.setText("");
+				comboBoxDvtThemThuoc.setSelectedIndex(-1);
 			}
 		});
 		btnReset.setForeground(Color.WHITE);
@@ -378,30 +370,26 @@ public class ManHinhChinh extends JFrame {
 		btnReset.setBorder(null);
 		btnReset.setBackground(new Color(0, 102, 153));
 		btnReset.setBounds(688, 413, 100, 36);
-		//btnReset.addActionListener(ac);
 		btnReset.setIcon(new ImageIcon(Toolkit.getDefaultToolkit()
 				.createImage(ManHinhChinh.class.getResource("Redo-icon.png"))
 				.getScaledInstance(24, 24, java.awt.Image.SCALE_SMOOTH)));
 		panelThemThuoc.add(btnReset);
 		
-		//String [] dvt = new String [] {"Vỉ", "Hộp"};
-		
-		
-		JPanel panelTraCucThuoc = new JPanel();
-		panelTraCucThuoc.setBackground(new Color(255, 255, 255));
-		tabbedPane.addTab("New tab", null, panelTraCucThuoc, null);
-		panelTraCucThuoc.setLayout(null);
+		JPanel panelTraCuuThuoc = new JPanel();
+		panelTraCuuThuoc.setBackground(new Color(255, 255, 255));
+		tabbedPane.addTab("New tab", null, panelTraCuuThuoc, null);
+		panelTraCuuThuoc.setLayout(null);
 		
 		JLabel lblTenThuocTraCuu = new JLabel("TÊN THUỐC");
 		lblTenThuocTraCuu.setFont(new Font("Arial", Font.BOLD, 17));
 		lblTenThuocTraCuu.setBounds(143, 26, 100, 30);
-		panelTraCucThuoc.add(lblTenThuocTraCuu);
+		panelTraCuuThuoc.add(lblTenThuocTraCuu);
 		
 		textFieldTenThuocTraCuu = new JTextField();
 		textFieldTenThuocTraCuu.setColumns(10);
 		textFieldTenThuocTraCuu.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
 		textFieldTenThuocTraCuu.setBounds(142, 52, 226, 23);
-		panelTraCucThuoc.add(textFieldTenThuocTraCuu);
+		panelTraCuuThuoc.add(textFieldTenThuocTraCuu);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
@@ -409,7 +397,7 @@ public class ManHinhChinh extends JFrame {
 		separator_1.setAlignmentY(0.75f);
 		separator_1.setAlignmentX(0.75f);
 		separator_1.setBounds(22, 110, 886, 5);
-		panelTraCucThuoc.add(separator_1);
+		panelTraCuuThuoc.add(separator_1);
 		
 		JButton btnTraCuu = new JButton("TRA CỨU");
 		btnTraCuu.setForeground(Color.WHITE);
@@ -417,7 +405,7 @@ public class ManHinhChinh extends JFrame {
 		btnTraCuu.setBorder(null);
 		btnTraCuu.setBackground(new Color(0, 102, 153));
 		btnTraCuu.setBounds(557, 48, 100, 36);
-		panelTraCucThuoc.add(btnTraCuu);
+		panelTraCuuThuoc.add(btnTraCuu);
 		
 		JButton btnResetTraCuu = new JButton("RESET");
 		btnResetTraCuu.setForeground(Color.WHITE);
@@ -428,7 +416,32 @@ public class ManHinhChinh extends JFrame {
 		btnResetTraCuu.setIcon(new ImageIcon(Toolkit.getDefaultToolkit()
 				.createImage(ManHinhChinh.class.getResource("Redo-icon.png"))
 				.getScaledInstance(24, 24, java.awt.Image.SCALE_SMOOTH)));
-		panelTraCucThuoc.add(btnResetTraCuu);
+		panelTraCuuThuoc.add(btnResetTraCuu);
+		
+		table = new JTable();
+		table.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(102, 205, 170)));
+		table.setSelectionBackground(new Color(173, 216, 230));
+		table.setGridColor(new Color(46, 139, 87));
+		table.setRowHeight(20);
+		table.setForeground(new Color(0, 0, 0));
+		table.setFont(new Font("Tahoma", Font.BOLD, 16));
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBorder(null);
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setBounds(33, 148, 875, 312);
+		panelTraCuuThuoc.add(scrollPane);
+		
+		
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Mã Thuốc", "Tên Thuốc", "Đơn Vị Tính", "Giá", "Số Lượng", "Cách Dùng"
+			}
+		));
+		table.setBounds(0, 0, 1, 1);
+		tableModel = (DefaultTableModel) table.getModel();
+		
 		
 		JPanel panelCapNhatThuoc = new JPanel();
 		panelCapNhatThuoc.setBackground(Color.WHITE);
@@ -440,74 +453,76 @@ public class ManHinhChinh extends JFrame {
 		lblMaThuoc_1_1.setBounds(195, 60, 100, 28);
 		panelCapNhatThuoc.add(lblMaThuoc_1_1);
 		
-		textField_5 = new JTextField();
-		textField_5.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		textField_5.setForeground(Color.BLACK);
-		textField_5.setColumns(10);
-		textField_5.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		textField_5.setBackground(Color.WHITE);
-		textField_5.setBounds(195, 91, 220, 28);
-		panelCapNhatThuoc.add(textField_5);
+		textFieldMaThuocCapNhat = new JTextField();
+		textFieldMaThuocCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		textFieldMaThuocCapNhat.setForeground(Color.BLACK);
+		textFieldMaThuocCapNhat.setColumns(10);
+		textFieldMaThuocCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		textFieldMaThuocCapNhat.setBackground(Color.WHITE);
+		textFieldMaThuocCapNhat.setBounds(195, 91, 220, 28);
+		panelCapNhatThuoc.add(textFieldMaThuocCapNhat);
 		
 		JLabel lblTenThuoc_1_1 = new JLabel("TÊN THUỐC");
 		lblTenThuoc_1_1.setFont(new Font("Arial", Font.BOLD, 17));
 		lblTenThuoc_1_1.setBounds(195, 161, 100, 28);
 		panelCapNhatThuoc.add(lblTenThuoc_1_1);
 		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		textField_6.setColumns(10);
-		textField_6.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		textField_6.setBounds(195, 189, 220, 31);
-		panelCapNhatThuoc.add(textField_6);
+		textFieldTenThuocCapNhat = new JTextField();
+		textFieldTenThuocCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		textFieldTenThuocCapNhat.setColumns(10);
+		textFieldTenThuocCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		textFieldTenThuocCapNhat.setBounds(195, 189, 220, 31);
+		panelCapNhatThuoc.add(textFieldTenThuocCapNhat);
 		
 		JLabel lblDonViTinh_1_1 = new JLabel("ĐƠN VỊ TÍNH");
 		lblDonViTinh_1_1.setFont(new Font("Arial", Font.BOLD, 17));
 		lblDonViTinh_1_1.setBounds(195, 248, 111, 31);
 		panelCapNhatThuoc.add(lblDonViTinh_1_1);
 		
-		JComboBox comboBox_1_1 = new JComboBox();
-		comboBox_1_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		comboBox_1_1.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		comboBox_1_1.setBackground(Color.WHITE);
-		comboBox_1_1.setBounds(195, 280, 220, 28);
-		panelCapNhatThuoc.add(comboBox_1_1);
+		model_DVT = new String[] {" ","Vỉ","Hộp"};
+		comboBoxDVTCapNhat = new JComboBox<String>(model_DVT);
+		//comboBoxDVTCapNhat.setModel(new DefaultComboBoxModel(new String[] {"", "Vỉ", "Hộp"}));
+		comboBoxDVTCapNhat.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboBoxDVTCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		comboBoxDVTCapNhat.setBackground(Color.WHITE);
+		comboBoxDVTCapNhat.setBounds(195, 280, 220, 28);
+		panelCapNhatThuoc.add(comboBoxDVTCapNhat);
 		
 		JLabel lblGia_1_1 = new JLabel("GIÁ");
 		lblGia_1_1.setFont(new Font("Arial", Font.BOLD, 17));
 		lblGia_1_1.setBounds(537, 60, 100, 28);
 		panelCapNhatThuoc.add(lblGia_1_1);
 		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		textField_7.setColumns(10);
-		textField_7.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		textField_7.setBounds(537, 91, 220, 28);
-		panelCapNhatThuoc.add(textField_7);
+		textFieldGiaCapNhat = new JTextField();
+		textFieldGiaCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		textFieldGiaCapNhat.setColumns(10);
+		textFieldGiaCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		textFieldGiaCapNhat.setBounds(537, 91, 220, 28);
+		panelCapNhatThuoc.add(textFieldGiaCapNhat);
 		
 		JLabel lblSoLuong_1_1 = new JLabel("SỐ LƯỢNG");
 		lblSoLuong_1_1.setFont(new Font("Arial", Font.BOLD, 17));
 		lblSoLuong_1_1.setBounds(537, 161, 100, 28);
 		panelCapNhatThuoc.add(lblSoLuong_1_1);
 		
-		textField_8 = new JTextField();
-		textField_8.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		textField_8.setColumns(10);
-		textField_8.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		textField_8.setBounds(537, 189, 220, 31);
-		panelCapNhatThuoc.add(textField_8);
+		textFieldSoLuongCapNhat = new JTextField();
+		textFieldSoLuongCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		textFieldSoLuongCapNhat.setColumns(10);
+		textFieldSoLuongCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		textFieldSoLuongCapNhat.setBounds(537, 189, 220, 31);
+		panelCapNhatThuoc.add(textFieldSoLuongCapNhat);
 		
 		JLabel lblCachDung_1_1 = new JLabel("CÁCH DÙNG");
 		lblCachDung_1_1.setFont(new Font("Arial", Font.BOLD, 17));
 		lblCachDung_1_1.setBounds(537, 248, 105, 24);
 		panelCapNhatThuoc.add(lblCachDung_1_1);
 		
-		textField_9 = new JTextField();
-		textField_9.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		textField_9.setColumns(10);
-		textField_9.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
-		textField_9.setBounds(537, 274, 220, 82);
-		panelCapNhatThuoc.add(textField_9);
+		textFieldCachDungCapNhat = new JTextField();
+		textFieldCachDungCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		textFieldCachDungCapNhat.setColumns(10);
+		textFieldCachDungCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
+		textFieldCachDungCapNhat.setBounds(537, 274, 220, 82);
+		panelCapNhatThuoc.add(textFieldCachDungCapNhat);
 		
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setBorder(new LineBorder(new Color(0, 102, 153), 3));
@@ -525,13 +540,23 @@ public class ManHinhChinh extends JFrame {
 		panelCapNhatThuoc.add(btnCapNhat);
 		
 		JButton btnResetCapNhat = new JButton("RESET");
+		btnResetCapNhat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textFieldMaThuocCapNhat.setText("");
+				textFieldTenThuocCapNhat.setText("");
+				textFieldGiaCapNhat.setText("");
+				textFieldSoLuongCapNhat.setText("");
+				textFieldCachDungCapNhat.setText("");
+				comboBoxDVTCapNhat.setSelectedIndex(-1);
+			}
+		});
 		btnResetCapNhat.setForeground(Color.WHITE);
 		btnResetCapNhat.setFont(new Font("Arial", Font.BOLD, 14));
 		btnResetCapNhat.setBorder(null);
 		btnResetCapNhat.setBackground(new Color(0, 102, 153));
 		btnResetCapNhat.setBounds(720, 414, 100, 36);
 		btnResetCapNhat.setIcon(new ImageIcon(Toolkit.getDefaultToolkit()
-				.createImage(ManHinhChinh.class.getResource("Logout-icon.png"))
+				.createImage(ManHinhChinh.class.getResource("redo-icon.png"))
 				.getScaledInstance(24, 24, java.awt.Image.SCALE_SMOOTH)));
 		panelCapNhatThuoc.add(btnResetCapNhat);
 		
@@ -543,12 +568,26 @@ public class ManHinhChinh extends JFrame {
 		btnCapNhat_Xoa.setBounds(601, 414, 100, 36);
 		panelCapNhatThuoc.add(btnCapNhat_Xoa);
 		
+		JButton btnCapNhatTimKiem = new JButton("Tìm");
+		btnCapNhatTimKiem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CapNhatTim(e);
+			}
+		});
+		btnCapNhatTimKiem.setForeground(Color.WHITE);
+		btnCapNhatTimKiem.setFont(new Font("Arial", Font.BOLD, 14));
+		btnCapNhatTimKiem.setBorder(null);
+		btnCapNhatTimKiem.setBackground(new Color(0, 102, 153));
+		btnCapNhatTimKiem.setBounds(331, 121, 84, 28);
+		panelCapNhatThuoc.add(btnCapNhatTimKiem);
+		
 		
 		//this.setVisible(true);
 	}
 	
 	
-	private void showStudent() {
+	
+	private void showTablePharmacy() {
 		pharmacyList = PharmacyModify.findAll();
 
 		tableModel.setRowCount(0);
@@ -563,19 +602,9 @@ public class ManHinhChinh extends JFrame {
 		});
 	}
 	
+	
 	private void btnThem(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
-
-		//String Dvt = (String)comboBoxDVT.getSelectedItem();
-//		String Dvt = null;
-//		try {
-//			Dvt = comboBoxDVT.getItemAt(comboBoxDVT.getSelectedIndex()).toString();
-//			System.out.println("get duoc dvt duoc roi");
-//		} catch (Exception e) {
-//			System.out.println("Lay thong tin DVT that bai");
-//			e.printStackTrace();
-//		}
-		//String Dvt = "Vỉ";
+		
 		String id=textFieldMaThuocThemThuoc.getText();
 		String Tensanpham = textFieldTenThuocThemThuoc.getText();
 		String Dvt = null;
@@ -589,16 +618,52 @@ public class ManHinhChinh extends JFrame {
 
 		PharmacyModify.insert(std);
 
-		showStudent();
+		showTablePharmacy();
 	}
 	
-	private void btnReset(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
-		textFieldMaThuocThemThuoc.setText("");
-		textFieldTenThuocThemThuoc.setText("");
-		textFieldGiaThemThuoc.setText("");
-		textFieldSoLuongThemThuoc.setText("");
-		textFieldCachDungThemThuoc.setText("");
-		comboBoxDvtThemThuoc.setSelectedIndex(-1);
+	public void CapNhatTim(java.awt.event.ActionEvent evt)
+	{
+		String id = textFieldMaThuocCapNhat.getText();
+		Pharmacy p = PharmacyModify.FindWithID(id);
+
+		String Tensanpham = p.getTensanpham();
+		String Dvt = p.getDvt();
+		for (String dvt : model_DVT) {
+			if(dvt.equals(Dvt)) {
+				
+			}
+		}
+		
+		Double gia = p.getGia();
+		int soluong = p.getSoluong();
+		String Cachdung = p.getCachdung();
+		
+		
+		//Còn đang BUG
+//		textFieldTenThuocCapNhat.setText(Tensanpham);
+//		textFieldGiaCapNhat.setText(gia.toString());
+//		textFieldSoLuongCapNhat.setText(soluong);
+//		textFieldCachDungCapNhat.setText(Cachdung);
+//		comboBoxDVTCapNhat.setSelectedIndex(soluong);;
 	}
+	
+	private void btnDelete(java.awt.event.ActionEvent evt) {
+		
+		String id = textFieldMaThuocCapNhat.getText();
+			int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa loại thuốc này?");
+			System.out.println("option : " + option);
+			if (option == 0) {
+				PharmacyModify.delete(id);
+				textFieldMaThuocCapNhat.setText("");
+				textFieldTenThuocCapNhat.setText("");
+				textFieldGiaCapNhat.setText("");
+				textFieldSoLuongCapNhat.setText("");
+				textFieldCachDungCapNhat.setText("");
+				comboBoxDVTCapNhat.setSelectedIndex(-1);
+			}
+		}
+	
+//	private void btnReset(java.awt.event.ActionEvent evt) {
+//		Reset();
+//	}
 }
