@@ -16,7 +16,9 @@ import java.util.logging.Logger;
  * CRUD (insert, update, delete, findAll)
  */
 public class PharmacyModify {
-    public static List<Pharmacy> findAll() {
+    private static Pharmacy std;
+
+	public static List<Pharmacy> findAll() {
         List<Pharmacy> pharmacyList = new ArrayList<>();
         
         Connection connection = null;
@@ -65,27 +67,26 @@ public class PharmacyModify {
     
     public static Pharmacy FindWithID(String id) {
     	//List<Pharmacy> pharmacyList = new ArrayList<>();
-    	
     	Connection connection = null;
         PreparedStatement statement = null;
+        Pharmacy std = null;
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
 
-            String query ="select * from pharmacy where mathuoc like?";
+            String query ="select * from pharmacy where `mathuoc` =?";
             statement = connection.prepareCall(query);
             
-            statement.setString(1, "%"+id+"%");
+            statement.setString(1, id);
             
             ResultSet resultSet = statement.executeQuery();
             
             while (resultSet.next()) {                
-            	Pharmacy std = new Pharmacy(resultSet.getString("mathuoc"), 
+            	 std = new Pharmacy(resultSet.getString("mathuoc"), 
                         resultSet.getString("tensanpham"), resultSet.getString("dvt"), 
                         resultSet.getDouble("gia"), resultSet.getInt("soluong"), 
                         resultSet.getString("cachdung"));
             	//pharmacyList.add(std);
             	
-            return std;
             }
 		} catch (SQLException ex) {
             Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
@@ -106,6 +107,7 @@ public class PharmacyModify {
                 }
             }
         }
+		return std;
     }
     
     public static void insert(Pharmacy std) {
@@ -152,7 +154,7 @@ public class PharmacyModify {
         //ket thuc.
     }
     
-    public static void update(Pharmacy std, int id) {
+    public static void update(Pharmacy std, String id) {
     	
         Connection connection = null;
         PreparedStatement statement = null;
@@ -162,15 +164,16 @@ public class PharmacyModify {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pharmacy_management", "root", "");
             
             //query
-            String sql = "update pharmacy set tensanpham=?,dvt=?,gia=?,soluong=?,cachdung=? where id = ?";
-        
+            String sql = "update pharmacy set tensanpham=?,dvt=?,gia=?,soluong=?,cachdung=? where mathuoc = ?";
+            
             statement = connection.prepareCall(sql);
             statement.setString(1, std.getTensanpham());
             statement.setString(2, std.getDvt());
             statement.setDouble(3, std.getGia());
             statement.setInt(4, std.getSoluong());
             statement.setString(5, std.getCachdung());
-            statement.setInt(6, id);
+            statement.setString(6, id);
+            //statement.setString(6, id);
             
             statement.execute();
         } catch (SQLException ex) {
@@ -204,7 +207,7 @@ public class PharmacyModify {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management", "root", "");
             
             //query
-            String sql = "delete from pharmacy where id = ?";
+            String sql = "delete from pharmacy where `mathuoc` = ?";
             statement = connection.prepareCall(sql);
             
             statement.setString(1, id);

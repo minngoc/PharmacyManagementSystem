@@ -66,7 +66,7 @@ public class ManHinhChinh extends JFrame {
 	DefaultTableModel tableModel;
 	List<Pharmacy> pharmacyList = new ArrayList<>();
 	public String[] model_DVT;
-	
+	public Integer[] model_index_comboboxCapNhat;
 	
 	
 	public static void main(String[] args) {
@@ -342,7 +342,7 @@ public class ManHinhChinh extends JFrame {
 		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnThem(e);
-				JOptionPane.showMessageDialog(btnThem, e, "THÊM THÀNH CÔNG", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(separator,"THÊM THÀNH CÔNG","THÔNG TIN", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
@@ -400,6 +400,13 @@ public class ManHinhChinh extends JFrame {
 		panelTraCuuThuoc.add(separator_1);
 		
 		JButton btnTraCuu = new JButton("TRA CỨU");
+		btnTraCuu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnTimTheoTen(e);
+				System.out.println("Đã tìm");
+				
+			}
+		});
 		btnTraCuu.setForeground(Color.WHITE);
 		btnTraCuu.setFont(new Font("Arial", Font.BOLD, 14));
 		btnTraCuu.setBorder(null);
@@ -434,11 +441,18 @@ public class ManHinhChinh extends JFrame {
 		
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
+				{null, null, null, null, null, null},
 			},
 			new String[] {
-				"Mã Thuốc", "Tên Thuốc", "Đơn Vị Tính", "Giá", "Số Lượng", "Cách Dùng"
+				"M\u00E3 Thu\u1ED1c", "T\u00EAn Thu\u1ED1c", "\u0110\u01A1n V\u1ECB T\u00EDnh", "Gi\u00E1", "S\u1ED1 L\u01B0\u1EE3ng", "C\u00E1ch D\u00F9ng"
 			}
 		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(47);
+		table.getColumnModel().getColumn(1).setPreferredWidth(184);
+		table.getColumnModel().getColumn(2).setPreferredWidth(31);
+		table.getColumnModel().getColumn(3).setPreferredWidth(52);
+		table.getColumnModel().getColumn(4).setPreferredWidth(47);
+		table.getColumnModel().getColumn(5).setPreferredWidth(276);
 		table.setBounds(0, 0, 1, 1);
 		tableModel = (DefaultTableModel) table.getModel();
 		
@@ -468,7 +482,7 @@ public class ManHinhChinh extends JFrame {
 		panelCapNhatThuoc.add(lblTenThuoc_1_1);
 		
 		textFieldTenThuocCapNhat = new JTextField();
-		textFieldTenThuocCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		textFieldTenThuocCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		textFieldTenThuocCapNhat.setColumns(10);
 		textFieldTenThuocCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
 		textFieldTenThuocCapNhat.setBounds(195, 189, 220, 31);
@@ -480,8 +494,9 @@ public class ManHinhChinh extends JFrame {
 		panelCapNhatThuoc.add(lblDonViTinh_1_1);
 		
 		model_DVT = new String[] {" ","Vỉ","Hộp"};
-		comboBoxDVTCapNhat = new JComboBox<String>(model_DVT);
-		//comboBoxDVTCapNhat.setModel(new DefaultComboBoxModel(new String[] {"", "Vỉ", "Hộp"}));
+//		model_index_comboboxCapNhat = new Integer[] {0,1,2}; 
+		comboBoxDVTCapNhat = new JComboBox<>();
+		comboBoxDVTCapNhat.setModel(new DefaultComboBoxModel(model_DVT));
 		comboBoxDVTCapNhat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboBoxDVTCapNhat.setBorder(new MatteBorder(1, 1, 2, 2, (Color) new Color(0, 102, 153)));
 		comboBoxDVTCapNhat.setBackground(Color.WHITE);
@@ -532,6 +547,12 @@ public class ManHinhChinh extends JFrame {
 		panelCapNhatThuoc.add(separator_1_1);
 		
 		JButton btnCapNhat = new JButton("CẬP NHẬT");
+		btnCapNhat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCapNhat(e);
+				JOptionPane.showMessageDialog(separator_1_1, "CẬP NHẬT THUỐC THÀNH CÔNG","THÔNG TIN",JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		btnCapNhat.setForeground(Color.WHITE);
 		btnCapNhat.setFont(new Font("Arial", Font.BOLD, 14));
 		btnCapNhat.setBorder(null);
@@ -561,6 +582,11 @@ public class ManHinhChinh extends JFrame {
 		panelCapNhatThuoc.add(btnResetCapNhat);
 		
 		JButton btnCapNhat_Xoa = new JButton("XÓA");
+		btnCapNhat_Xoa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDelete(e);
+			}
+		});
 		btnCapNhat_Xoa.setForeground(Color.WHITE);
 		btnCapNhat_Xoa.setFont(new Font("Arial", Font.BOLD, 14));
 		btnCapNhat_Xoa.setBorder(null);
@@ -571,7 +597,7 @@ public class ManHinhChinh extends JFrame {
 		JButton btnCapNhatTimKiem = new JButton("Tìm");
 		btnCapNhatTimKiem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CapNhatTim(e);
+				btnCapNhatTim(e);
 			}
 		});
 		btnCapNhatTimKiem.setForeground(Color.WHITE);
@@ -593,12 +619,12 @@ public class ManHinhChinh extends JFrame {
 		tableModel.setRowCount(0);
 
 		pharmacyList.forEach((Pharmacy) -> {
-			tableModel.addRow(new Object[] { tableModel.getRowCount() + 1,Pharmacy.getId(),
-																		Pharmacy.getTensanpham(),
-																		Pharmacy.getDvt(),
-																		Pharmacy.getGia(),
-																		Pharmacy.getSoluong(),
-																		Pharmacy.getCachdung()});
+			tableModel.addRow(new Object[] {Pharmacy.getId(),
+											Pharmacy.getTensanpham(),
+											Pharmacy.getDvt(),
+											Pharmacy.getGia(),
+											Pharmacy.getSoluong(),
+											Pharmacy.getCachdung()});
 		});
 	}
 	
@@ -620,31 +646,64 @@ public class ManHinhChinh extends JFrame {
 
 		showTablePharmacy();
 	}
+	/////Tìm theo tên
+	private void btnTimTheoTen(java.awt.event.ActionEvent evt) {
+		String name= textFieldTenThuocTraCuu.getText();
+			pharmacyList = PharmacyModify.findByFullname(name);
+
+			//tableModel.setRowCount(0);
+
+			pharmacyList.forEach((Pharmacy) -> {
+				tableModel.addRow(new Object[] {Pharmacy.getTensanpham(),
+						Pharmacy.getDvt(), Pharmacy.getGia(), Pharmacy.getSoluong() });
+			});
+			showTablePharmacy();
+	}
 	
-	public void CapNhatTim(java.awt.event.ActionEvent evt)
+	public void btnCapNhatTim(java.awt.event.ActionEvent evt)
 	{
 		String id = textFieldMaThuocCapNhat.getText();
-		Pharmacy p = PharmacyModify.FindWithID(id);
+		PharmacyModify.FindWithID(id);
 
-		String Tensanpham = p.getTensanpham();
-		String Dvt = p.getDvt();
-		for (String dvt : model_DVT) {
-			if(dvt.equals(Dvt)) {
-				
+		String ID= PharmacyModify.FindWithID(id).getId();
+		String tensanpham = PharmacyModify.FindWithID(id).getTensanpham();
+		String Dvt = PharmacyModify.FindWithID(id).getDvt();
+		int i=0;
+		while(true) {
+			if(Dvt.equals(model_DVT[i])) {
+				break;
 			}
+			i++;
 		}
+		Double gia = PharmacyModify.FindWithID(id).getGia();
+		Integer soluong = PharmacyModify.FindWithID(id).getSoluong();
+		String Cachdung = PharmacyModify.FindWithID(id).getCachdung();
 		
-		Double gia = p.getGia();
-		int soluong = p.getSoluong();
-		String Cachdung = p.getCachdung();
+//		System.out.println(ID);
+//		System.out.println(tensanpham);
+//		System.out.println(Dvt);
+//		System.out.println(gia);
+//		System.out.println(soluong);
+//		System.out.println(Cachdung);
 		
-		
-		//Còn đang BUG
-//		textFieldTenThuocCapNhat.setText(Tensanpham);
-//		textFieldGiaCapNhat.setText(gia.toString());
-//		textFieldSoLuongCapNhat.setText(soluong);
-//		textFieldCachDungCapNhat.setText(Cachdung);
-//		comboBoxDVTCapNhat.setSelectedIndex(soluong);;
+		textFieldMaThuocCapNhat.setText(ID);
+		textFieldTenThuocCapNhat.setText(tensanpham);
+		textFieldGiaCapNhat.setText(gia.toString());
+		textFieldSoLuongCapNhat.setText(soluong.toString());
+		textFieldCachDungCapNhat.setText(Cachdung);
+		comboBoxDVTCapNhat.setSelectedIndex(i);
+	}
+	
+	private void btnCapNhat(java.awt.event.ActionEvent evt) {
+		String id= textFieldMaThuocCapNhat.getText();
+		String Tensanpham = textFieldTenThuocCapNhat.getText();
+		String Dvt = comboBoxDVTCapNhat.getSelectedItem().toString();
+		double Gia = Double.parseDouble(textFieldGiaCapNhat.getText());
+		int Soluong = Integer.parseInt(textFieldSoLuongCapNhat.getText());
+		String Cachdung = textFieldCachDungCapNhat.getText();
+		Pharmacy std1 = new Pharmacy(Tensanpham, Dvt, Gia, Soluong, Cachdung);
+//		System.out.println(std);
+		PharmacyModify.update(std1,id);
 	}
 	
 	private void btnDelete(java.awt.event.ActionEvent evt) {
