@@ -1,1 +1,1 @@
-# QuanLyTiemThuocTay
+# Pharmacy Management
