@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,6 +31,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.border.MatteBorder;
+
+import pharmacy.PharmacyModify;
+
 import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
 
@@ -40,6 +45,7 @@ public class LoginFrame extends javax.swing.JFrame {
 	private JPanel contentPane;
 	private JTextField txtuser;
 	private JPasswordField txtpass;
+	public static boolean option= false;
 
 //	private JComboBox comboBox;
 	/**
@@ -93,7 +99,7 @@ public class LoginFrame extends javax.swing.JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String query = "SELECT `user_name`, `user_password` FROM `user` WHERE user_name=? and user_password=?";
+					String query = "SELECT `user_name`, `user_password`, `options` FROM `user` WHERE user_name=? and user_password=?";
 					con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy_management","root","");
 					pst = con.prepareStatement(query);
 					pst.setString(1, txtuser.getText());
@@ -101,14 +107,23 @@ public class LoginFrame extends javax.swing.JFrame {
 					ResultSet rs = pst.executeQuery();
 					if(rs.next()) {
 						JOptionPane.showMessageDialog(btnNewButton, "Đăng nhập thành công!");
+						if(rs.getString("options").equals("admin")){
+							option=true;
+						}
+						else {
+							option=false;
+						}
+						setVisible(false);
+						
 						ManHinhChinh a = new ManHinhChinh();
 						a.main(null);
+						
 					}else {
 						JOptionPane.showMessageDialog(btnNewButton, "Tên người dùng hoặc mật khẩu không đúng!");
 					}
 
 				} catch (Exception ex) {
-
+					Logger.getLogger(PharmacyModify.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
 		});
@@ -204,5 +219,8 @@ public class LoginFrame extends javax.swing.JFrame {
 		contentPane.add(btnHuy);
 
 	}
+	
+	public static boolean isAdmin() {
+		return option;
+	}
 }
-

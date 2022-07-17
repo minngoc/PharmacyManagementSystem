@@ -5,16 +5,18 @@ public class Pharmacy {
 	private String tensanpham, dvt, cachdung;
 	private double gia;
 	private int soluong;
+	private String hansudung;
 
 	public Pharmacy() {
 	}
 
-	public Pharmacy(String id, String tensanpham, String dvt, double gia, int soluong, String cachdung) {
+	public Pharmacy(String id, String tensanpham, String dvt, double gia, int soluong,String hsd, String cachdung) {
 		this.id = id;
 		this.tensanpham = tensanpham;
 		this.dvt = dvt;
 		this.gia = gia;
 		this.soluong = soluong;
+		this.hansudung=hsd;
 		this.cachdung = cachdung;
 	}
 	public Pharmacy(String tensanpham, String dvt, double gia, int soluong, String cachdung) {
@@ -75,6 +77,15 @@ public class Pharmacy {
 	public void setSoluong(int soluong) {
 		this.soluong = soluong;
 	}
+	
+	public String getHSD() {
+		return hansudung;
+	}
+
+	public void setHSD(String hsd) {
+		this.hansudung = hsd;
+	}
+	
 	public String getCachdung() {
 		return cachdung;
 	}
